@@ -17,7 +17,7 @@ import (
 	"os"
 	"time"
 
-	core "github.com/star-inc/olsb_go" // Replace LINE TalkService Core you own
+	core "github.com/star-inc/olsb_cores/libs/NepCoreO" // Replace LINE TalkService Core you own
 
 	"github.com/star-inc/thrift_go/thrift"
 )
