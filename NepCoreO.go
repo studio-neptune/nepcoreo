@@ -10,7 +10,6 @@ Package NepCoreO : The LINE Client Protocol of Star Neptune BOT
 package NepCoreO
 
 import (
-	core "LINE_CORE" // Replace LINE TalkService Core you own
 	"context"
 	"encoding/json"
 	"fmt"
@@ -18,7 +17,9 @@ import (
 	"os"
 	"time"
 
-	"git.apache.org/thrift.git/lib/go/thrift"
+	core "github.com/star-inc/olsb_go" // Replace LINE TalkService Core you own
+
+	"github.com/star-inc/thrift_go/thrift"
 )
 
 // Seq :  int
