@@ -10,8 +10,8 @@ Package NepCoreO : The LINE Client Protocol of Star Neptune BOT
 package NepCoreO
 
 import (
+	core "LINE_CORE" // Replace LINE TalkService Core you own
 	"context"
-	core "" // LINE TalkService Core you own
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -51,7 +51,7 @@ func SetThread(ms int) (context.Context, context.CancelFunc) {
 }
 
 // Connect : To connect to LINE Server
-func Connect(authToken string, talkPath string, configJSON string) *core.TalkServiceClient {
+func Connect(authToken string, talkPath string) *core.TalkServiceClient {
 	var err error
 	// Config Headers
 	var Configs config

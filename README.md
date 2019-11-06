@@ -14,8 +14,14 @@ Due to [Star Neptune BOT](https://snb.starinc.xyz) project has been delay for 5 
 Recommand Environment:
 
     Go Language Compiler >= 1.9
+    Thrift == 0.11.0
 
 You need the "LINE Unofficial API Core for Go Language". (Ex:[olsb_go](https://github.com/star-inc/olsb_go)...)
+
+## Installation
+Type
+
+    go get github.com/star-inc/NepCoreO
 
 ## How to use?
 Modify the [config.json](config.json) for connection, and set the CORE what you own in [NepCoreO.go](NepCoreO.go)
