@@ -3,9 +3,9 @@ Package NepCoreO : The LINE Client Protocol of Star Neptune BOT
 	===
 			The Package is the OpenSource Version of NepCore
 
-			LICENSE: AGPL 3.0
+			LICENSE: Apache License 2.0
 
-						Copyright(c) 2019 Star Inc. All Rights Reserved.
+						Copyright(c) 2020 Star Inc. All Rights Reserved.
 */
 package NepCoreO
 
@@ -25,6 +25,14 @@ import (
 // Seq :  int
 var Seq int32
 
+// ClientInterface : Set Timeout for goroutine
+type ClientInterface struct {
+	TalkServiceClient *core.TalkServiceClient
+	Config            *config
+	talkPath          string
+	authToken         string
+}
+
 type headerConfig struct {
 	UserAgent   string `json:"User-Agent"`
 	Application string `json:"X-Line-Application"`
@@ -43,50 +51,65 @@ func deBug(where string, err error) bool {
 	return true
 }
 
-// SetThread : Set Timeout for goroutine
-func SetThread(ms int) (context.Context, context.CancelFunc) {
+func readConfig(configObj *config) {
+	jsonFile, err := os.Open("config.json")
+	deBug("Loading JSON config", err)
+	defer jsonFile.Close()
+	srcJSON, _ := ioutil.ReadAll(jsonFile)
+	err = json.Unmarshal(srcJSON, &configObj)
+	deBug("JSON config Initialize", err)
+}
+
+// SetRoutine : Set Timeout for goroutine
+func SetRoutine(ms int) (context.Context, context.CancelFunc) {
 	var addTime time.Duration = time.Duration(ms) * time.Millisecond
 	timeout := time.Now().Add(addTime)
 	ctx, deadline := context.WithDeadline(context.Background(), timeout)
 	return ctx, deadline
 }
 
-// Connect : To connect to LINE Server
-func Connect(authToken string, talkPath string) *core.TalkServiceClient {
-	var err error
-	// Config Headers
-	var Configs config
-	jsonFile, err := os.Open("config.json")
-	deBug("Load JSON config", err)
-	defer jsonFile.Close()
-	srcJSON, _ := ioutil.ReadAll(jsonFile)
-	err = json.Unmarshal(srcJSON, &Configs)
-	deBug("Login JSON Initialize", err)
-	HeaderConfigs := Configs.Header
+// NewClientInterface : To connect to LINE Server
+func NewClientInterface(talkPath string) *ClientInterface {
+	client := new(ClientInterface)
+	client.talkPath = talkPath
+	readConfig(client.Config)
+	client.setProtocol()
+	return client
+}
+
+func (client *ClientInterface) setProtocol() {
 	// Set Transport
-	var transport thrift.TTransport
-	TalkURL := fmt.Sprintf("%s%s", Configs.Server, talkPath)
-	transport, err = thrift.NewTHttpPostClient(TalkURL)
+	apiURL := fmt.Sprintf("%s%s", client.Config.Server, client.talkPath)
+	transport, err := thrift.NewTHttpPostClient(apiURL)
 	deBug("Login Thrift Client Initialize", err)
+
 	// Set Header
-	var connect *thrift.THttpClient
-	connect = transport.(*thrift.THttpClient)
-	connect.SetHeader("X-Line-Access", authToken)
-	connect.SetHeader("User-Agent", HeaderConfigs.UserAgent)
-	connect.SetHeader("X-Line-Application", HeaderConfigs.Application)
-	setProtocol := thrift.NewTCompactProtocolFactory()
-	protocol := setProtocol.GetProtocol(connect)
-	// Return Client
-	return core.NewTalkServiceClientProtocol(connect, protocol, protocol)
+	connect := transport.(*thrift.THttpClient)
+	connect.SetHeader("User-Agent", client.Config.Header.UserAgent)
+	connect.SetHeader("X-Line-Application", client.Config.Header.Application)
+	if client.authToken != "" {
+		connect.SetHeader("X-Line-Access", client.authToken)
+
+	}
+	protocol := thrift.NewTCompactProtocolFactory().GetProtocol(connect)
+
+	// Configure Client
+	client.TalkServiceClient = core.NewTalkServiceClientProtocol(connect, protocol, protocol)
+}
+
+// Authorize : To connect to LINE Server
+func (client *ClientInterface) Authorize(authToken string) {
+	client.authToken = authToken
+	client.setProtocol()
 }
 
 // SendText : Send text message to someone
-func SendText(client *core.TalkServiceClient, toID string, msgText string) {
+func (client *ClientInterface) SendText(targetID string, contentText string) {
 	msgObj := core.NewMessage()
 	msgObj.ContentType = core.ContentType_NONE
-	msgObj.To = toID
-	msgObj.Text = msgText
-	ctx, _ := SetThread(500)
-	_, err := client.SendMessage(ctx, Seq, msgObj)
+	msgObj.To = targetID
+	msgObj.Text = contentText
+	ctx, _ := SetRoutine(500)
+	_, err := client.TalkServiceClient.SendMessage(ctx, Seq, msgObj)
 	deBug("SendMessage - Text", err)
 }
