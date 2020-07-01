@@ -10,7 +10,7 @@ This is the API of LINE to connect their Talk Service
 
 ## Why We Upload It
 
-Due to [Star Neptune BOT](https://snb.starinc.xyz) project has been delay for 5 years, so we put it to GitHub as an opensource project.
+Due to [Star Neptune BOT](https://snb.starinc.xyz) project has been delayed for 5 years, so we put it to GitHub as an opensource project.
 
 ## Requirement
 
@@ -18,16 +18,16 @@ Recommand Environment:
 
     Go Language Compiler >= 1.9
 
-You need the "LINE Unofficial API Core for Go Language". (Ex:[olsb_cores](https://github.com/star-inc/olsb_cores)...)
+If you have the other "LINE Unofficial API Core for Go Language", you can replace [olsb_cores](https://github.com/star-inc/NepCoreO/blob/master/NepCoreO.go#L20) with it.
 
 ## Installation
 
-Type
+Type:
 
     go get github.com/star-inc/thrift_go/thrift
     go get github.com/star-inc/NepCoreO
 
-If you want to use *olsb_cores*, type
+If you want to use *olsb_cores*, type:
 
     go get github.com/star-inc/olsb_cores/libs/NepCoreO
 
