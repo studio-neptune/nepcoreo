@@ -25,7 +25,7 @@ import (
 // Seq :  int
 var Seq int32
 
-// ClientInterface : Set Timeout for goroutine
+// ClientInterface : The interface for client
 type ClientInterface struct {
 	TalkServiceClient *core.TalkServiceClient
 	Config            *NepCoreConfig
@@ -33,6 +33,7 @@ type ClientInterface struct {
 	authToken         string
 }
 
+// NepCoreConfig : Configs for NepCore
 type NepCoreConfig struct {
 	Server string `json:"Server"`
 	Header struct {
@@ -66,7 +67,7 @@ func SetRoutine(ms int) (context.Context, context.CancelFunc) {
 	return ctx, deadline
 }
 
-// NewClientInterface : To connect to LINE Server
+// NewClientInterface : Set interface for client
 func NewClientInterface(talkPath string) *ClientInterface {
 	client := new(ClientInterface)
 	client.talkPath = talkPath
