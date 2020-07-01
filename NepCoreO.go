@@ -28,19 +28,17 @@ var Seq int32
 // ClientInterface : Set Timeout for goroutine
 type ClientInterface struct {
 	TalkServiceClient *core.TalkServiceClient
-	Config            *config
+	Config            *NepCoreConfig
 	talkPath          string
 	authToken         string
 }
 
-type headerConfig struct {
-	UserAgent   string `json:"User-Agent"`
-	Application string `json:"X-Line-Application"`
-}
-
-type config struct {
-	Server string       `json:"Server"`
-	Header headerConfig `json:"Header"`
+type NepCoreConfig struct {
+	Server string `json:"Server"`
+	Header struct {
+		UserAgent   string `json:"User-Agent"`
+		Application string `json:"X-Line-Application"`
+	} `json:"Header"`
 }
 
 func deBug(where string, err error) bool {
@@ -51,7 +49,7 @@ func deBug(where string, err error) bool {
 	return true
 }
 
-func readConfig(configObj *config) {
+func readConfig(configObj *NepCoreConfig) {
 	jsonFile, err := os.Open("config.json")
 	deBug("Loading JSON config", err)
 	defer jsonFile.Close()
