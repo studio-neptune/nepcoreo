@@ -50,15 +50,6 @@ func deBug(where string, err error) bool {
 	return true
 }
 
-func readConfig(configObj *NepCoreConfig) {
-	jsonFile, err := os.Open("config.json")
-	deBug("Loading JSON config", err)
-	defer jsonFile.Close()
-	srcJSON, _ := ioutil.ReadAll(jsonFile)
-	err = json.Unmarshal(srcJSON, &configObj)
-	deBug("JSON config Initialize", err)
-}
-
 // SetRoutine : Set Timeout for goroutine
 func SetRoutine(ms int) (context.Context, context.CancelFunc) {
 	var addTime time.Duration = time.Duration(ms) * time.Millisecond
@@ -71,9 +62,18 @@ func SetRoutine(ms int) (context.Context, context.CancelFunc) {
 func NewClientInterface(talkPath string) *ClientInterface {
 	client := new(ClientInterface)
 	client.talkPath = talkPath
-	readConfig(client.Config)
+	client.readConfig()
 	client.setProtocol()
 	return client
+}
+
+func (client *ClientInterface) readConfig() {
+	jsonFile, err := os.Open("nepcore.json")
+	deBug("Loading JSON config", err)
+	defer jsonFile.Close()
+	srcJSON, _ := ioutil.ReadAll(jsonFile)
+	err = json.Unmarshal(srcJSON, &client.Config)
+	deBug("JSON config Initialize", err)
 }
 
 func (client *ClientInterface) setProtocol() {

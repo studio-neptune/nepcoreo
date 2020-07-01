@@ -33,7 +33,7 @@ If you want to use *olsb_cores*, type:
 
 ## How To Use
 
-Modify the [config.json](config.json) for connection.
+Copy the [nepcore.json](nepcore.json) to your project and modify it for connection.
 
 You can replace *olsb_cores* with the CORE what you own in [NepCoreO.go](NepCoreO.go)
 
