@@ -108,7 +108,8 @@ func (client *ClientInterface) SendText(targetID string, contentText string) {
 	msgObj.ContentType = core.ContentType_NONE
 	msgObj.To = targetID
 	msgObj.Text = contentText
-	ctx, _ := SetRoutine(500)
+	ctx, cancel := SetRoutine(500)
+	defer cancel()
 	_, err := client.TalkServiceClient.SendMessage(ctx, Seq, msgObj)
 	deBug("SendMessage - Text", err)
 }
