@@ -24,12 +24,12 @@ If you have the other "LINE Unofficial API Core for Go Language", you can replac
 
 Type:
 
-    go get github.com/star-inc/thrift_go/thrift
-    go get github.com/star-inc/NepCoreO
+    go get -u github.com/star-inc/thrift_go/thrift
+    go get -u github.com/star-inc/NepCoreO
 
 If you want to use *olsb_cores*, type:
 
-    go get github.com/star-inc/olsb_cores/libs/NepCoreO
+    go get -u github.com/star-inc/olsb_cores/libs/NepCoreO
 
 ## How To Use
 
