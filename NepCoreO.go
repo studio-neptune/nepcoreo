@@ -79,7 +79,7 @@ func (client *ClientInterface) readConfig() {
 func (client *ClientInterface) setProtocol() {
 	// Set Transport
 	apiURL := fmt.Sprintf("%s%s", client.Config.Server, client.talkPath)
-	transport, err := thrift.NewTHttpPostClient(apiURL)
+	transport, err := thrift.NewTHttpClient(apiURL)
 	deBug("Login Thrift Client Initialize", err)
 
 	// Set Header
@@ -88,7 +88,6 @@ func (client *ClientInterface) setProtocol() {
 	connect.SetHeader("X-Line-Application", client.Config.Header.Application)
 	if client.authToken != "" {
 		connect.SetHeader("X-Line-Access", client.authToken)
-
 	}
 	protocol := thrift.NewTCompactProtocolFactory().GetProtocol(connect)
 
