@@ -1,0 +1,4 @@
+github.com/star-inc/olsb_cores v0.0.0-20200712081348-91bd27189b5e h1:oBVqBKBdws/5CXQSBFv1E2FBzfnNgIpunNeEZ9FOWVQ=
+github.com/star-inc/olsb_cores v0.0.0-20200712081348-91bd27189b5e/go.mod h1:drKe1ruzg5WSY1wwjwocPfGeeMSMO88F1PDBTIWqNz0=
+github.com/star-inc/thrift_go v0.0.0-20191106135211-2ea31ec2c1d6 h1:3IYrf2Rjdno4rKrbGvl67qAFcHdExBml0wJEthMuy1Y=
+github.com/star-inc/thrift_go v0.0.0-20191106135211-2ea31ec2c1d6/go.mod h1:tz85r3YTomYZfe9BBvY6qZMVpAhUKTJmETKMGwJ0cj0=
